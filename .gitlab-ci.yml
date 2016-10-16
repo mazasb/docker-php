@@ -1,0 +1,13 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+
+build:
+  stage: build
+  script:
+    - docker build --pull -t $CI_REGISTRY_IMAGE:php7-test ./php7/test
+    - docker push $CI_REGISTRY_IMAGE:php7-test
